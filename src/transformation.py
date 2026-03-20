@@ -26,6 +26,14 @@ def join_tables(orders, customers, payments_agg, items_agg):
         .join(customers, "customer_id", "left") \
         .join(payments_agg, "order_id", "left") \
         .join(items_agg, "order_id", "left")
+
+    # Cache in memory — this DataFrame is reused across all aggregations
+    # so caching avoids recomputing the joins multiple times
+    df = df.cache()
+
+    # Repartition for optimised parallel writes
+    df = df.repartition(8)
+
     return df
 
 
