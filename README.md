@@ -1,5 +1,18 @@
 # E-Commerce Sales Analytics ETL Pipeline
 
+## Architecture Diagram
+```mermaid
+flowchart LR
+    A[Kaggle CSVsorders, customers, payments, items] --> B[IngestionPySpark DataFrames]
+    B --> C[CleaningNulls, deduplication, filtering]
+    C --> D[TransformationJoins + feature engineering]
+    D --> E[AggregationBusiness metrics and KPIs]
+    E --> F1[ParquetOptimized storage]
+    E --> F2[CSV ReportsAnalytics outputs]
+    F1 --> G[DownstreamML and Analytics]
+    F2 --> G
+```
+
 An end-to-end PySpark ETL pipeline built on the Brazilian E-Commerce
 Public Dataset (Olist) with 100k+ orders across multiple relational tables.
 
